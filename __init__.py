@@ -1,7 +1,7 @@
 __author__ = 'Lijun Yu'
 
 
-def get(name):
+def get_loader(name):
     if name == 'AVI-R':
         from .avi_r import AVIRLoader
         return AVIRLoader
