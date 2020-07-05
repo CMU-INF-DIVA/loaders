@@ -1,4 +1,5 @@
 import os.path as osp
+from collections import namedtuple
 from typing import Iterator, List, Tuple, Union
 
 import numpy as np
@@ -20,6 +21,10 @@ class Frame(object):
         self.sequence_id = sequence_id or frame_id
 
 
+LoaderMeta = namedtuple('LoaderMeta', [
+    'frame_rate', 'width', 'height', 'num_frames'])
+
+
 class Loader(object):
 
     def __init__(self, video_path: str, parent_dir: str = ''):
@@ -27,14 +32,12 @@ class Loader(object):
 
     def set_meta(self, frame_rate: float, width: int, height: int,
                  num_frames: Union[None, int] = None):
-        self.frame_rate = float(frame_rate)
-        self.width = int(width)
-        self.height = int(height)
-        self.num_frames = num_frames
+        self.meta = LoaderMeta(
+            float(frame_rate), int(width), int(height), num_frames)
 
     def __call__(self, batch_size: int = 1, limit: Union[None, int] = None,
                  stride: int = 1,  start: int = 0) \
-            -> Iterator[Frame]:
+            -> Iterator[List[Frame]]:
         '''
         batch_size: number of frames in a batch
         limit: total number of frames to yield
