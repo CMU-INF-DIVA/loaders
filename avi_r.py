@@ -3,7 +3,7 @@ import torch
 
 from avi_r import AVIReader
 
-from .base import Loader, Frame
+from .base import Frame, FrameBatch, Loader
 
 
 class AVIRLoader(Loader):
@@ -16,14 +16,14 @@ class AVIRLoader(Loader):
 
     def __call__(self, batch_size=1, limit=None, stride=1, start=0):
         frames = []
+        batch_id = 0
         self.video.seek(start)
-        for sequence_id, raw_frame in enumerate(
-                self.video.get_iter(limit, stride)):
-            frame = Frame(raw_frame.numpy('bgr24'), raw_frame.frame_id,
-                          sequence_id)
+        for raw_frame in self.video.get_iter(limit, stride):
+            frame = Frame(raw_frame.numpy('bgr24'), raw_frame.frame_id)
             frames.append(frame)
             if len(frames) == batch_size:
-                yield frames
+                yield FrameBatch(frames, batch_id)
                 frames = []
+                batch_id += 1
         if len(frames) > 0:
-            yield frames
+            yield FrameBatch(frames, batch_id)

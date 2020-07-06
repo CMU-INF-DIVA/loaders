@@ -8,17 +8,31 @@ import torch
 
 class Frame(object):
 
-    def __init__(self, image: np.ndarray, frame_id: int,
-                 sequence_id: Union[None, int] = None):
+    def __init__(self, image: np.ndarray, frame_id: int):
         '''
         image: numpy array as H x W x C[BGR] in [0, 256)
-        frame_id: raw index in the original video
-        sequence_id: actual index in the current load. 
-            None for the same as frame_id.
+        frame_id: frame index in the original video
         '''
         self.image = torch.as_tensor(image)
         self.frame_id = frame_id
-        self.sequence_id = sequence_id or frame_id
+
+    def __repr__(self):
+        return '%s(id=%d)' % (self.__class__.__name__, self.frame_id)
+
+
+class FrameBatch(object):
+
+    def __init__(self, frames: List[Frame], batch_id: int):
+        self.images = torch.stack([frame.image for frame in frames])
+        self.frame_ids = torch.as_tensor([frame.frame_id for frame in frames])
+        self.batch_id = batch_id
+
+    def __len__(self):
+        return self.frame_ids.shape[0]
+
+    def __repr__(self):
+        return '%s(id=%d, len=%d)' % (
+            self.__class__.__name__, self.batch_id, len(self))
 
 
 LoaderMeta = namedtuple('LoaderMeta', [
@@ -37,7 +51,7 @@ class Loader(object):
 
     def __call__(self, batch_size: int = 1, limit: Union[None, int] = None,
                  stride: int = 1,  start: int = 0) \
-            -> Iterator[List[Frame]]:
+            -> Iterator[FrameBatch]:
         '''
         batch_size: number of frames in a batch
         limit: total number of frames to yield
