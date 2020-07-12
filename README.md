@@ -4,11 +4,22 @@ Author: Lijun Yu
 
 Email: lijun@lj-y.com
 
-Video loaders.
+A submodule of video loaders.
 
 ## Loader list
 
 * [AVI-R](https://pypi.org/project/avi-r/)
+
+## API
+
+```python
+from loaders import get_loader
+video_path = ...
+loader_class = get_loader('AVI-R')
+loader = loader_class(video_path)
+for frame_batch in loader():
+    # do something with the frame batch
+```
 
 ## TODO
 
