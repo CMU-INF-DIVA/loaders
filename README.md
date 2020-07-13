@@ -6,7 +6,7 @@ Email: lijun@lj-y.com
 
 A submodule of video loaders.
 
-## Loader list
+## Loader List
 
 * [AVI-R](https://pypi.org/project/avi-r/)
 
