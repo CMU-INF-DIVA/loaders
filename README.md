@@ -6,9 +6,14 @@ Email: lijun@lj-y.com
 
 A submodule of video loaders.
 
-## Loader List
+## Loaders
 
 * [AVI-R](https://pypi.org/project/avi-r/)
+
+### TODO
+
+* [Decord](https://github.com/dmlc/decord)
+* [MoviePy](https://pypi.org/project/moviepy/)
 
 ## API
 
@@ -21,10 +26,9 @@ for frame_batch in loader():
     # do something with the frame batch
 ```
 
-## TODO
+## Dependency
 
-* [Decord](https://github.com/dmlc/decord)
-* [MoviePy](https://pypi.org/project/moviepy/)
+See [actev_base](https://github.com/CMU-INF-DIVA/actev_base).
 
 ## License
 
