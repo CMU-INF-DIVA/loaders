@@ -25,3 +25,7 @@ for frame_batch in loader():
 
 * [Decord](https://github.com/dmlc/decord)
 * [MoviePy](https://pypi.org/project/moviepy/)
+
+## License
+
+See [License](LICENSE).
