@@ -8,19 +8,15 @@ A submodule of video loaders.
 
 ## Loaders
 
-* [AVI-R](https://pypi.org/project/avi-r/)
-
-### TODO
-
-* [Decord](https://github.com/dmlc/decord)
-* [MoviePy](https://pypi.org/project/moviepy/)
+* [AVI-R](https://pypi.org/project/avi-r/) for `.avi` files.
+* [MoviePy](https://pypi.org/project/moviepy/) for `.mp4` and other files.
 
 ## API
 
 ```python
 from loaders import get_loader
 video_path = ...
-loader_class = get_loader('AVI-R')
+loader_class = get_loader('AVI-R')  # Or MoviePy
 loader = loader_class(video_path)
 for frame_batch in loader():
     # do something with the frame batch

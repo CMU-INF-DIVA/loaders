@@ -47,7 +47,8 @@ class Loader(object):
     def set_meta(self, frame_rate: float, width: int, height: int,
                  num_frames: Union[None, int] = None):
         self.meta = LoaderMeta(
-            float(frame_rate), int(width), int(height), num_frames)
+            float(frame_rate), int(width), int(height),
+            int(num_frames) if num_frames is not None else None)
 
     def __call__(self, batch_size: int = 1, limit: Union[None, int] = None,
                  stride: int = 1,  start: int = 0) \
