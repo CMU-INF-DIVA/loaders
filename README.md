@@ -15,8 +15,10 @@ A submodule of video loaders.
 
 ```python
 from loaders import get_loader
+
 video_path = ...
 loader_class = get_loader('AVI-R')  # Or MoviePy
+
 loader = loader_class(video_path)
 for frame_batch in loader():
     # do something with the frame batch
