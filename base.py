@@ -8,15 +8,14 @@ import torch
 
 class Frame(object):
 
-    def __init__(self, image: np.ndarray, frame_id: int, **kwargs):
+    def __init__(self, image: np.ndarray, frame_id: int, **custom_attributes):
         '''
         image: numpy array as H x W x C[BGR] in [0, 256)
         frame_id: frame index in the original video
         '''
         self.image = torch.as_tensor(image)
         self.frame_id = frame_id
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        self.__dict__.update(custom_attributes)
 
     def __repr__(self):
         return '%s(id=%d)' % (self.__class__.__name__, self.frame_id)
@@ -24,12 +23,20 @@ class Frame(object):
 
 class FrameBatch(object):
 
-    def __init__(self, frames: List[Frame], batch_id: int, **kwargs):
+    def __init__(self, frames: List[Frame], batch_id: int, *,
+                 duplicate=False, **custom_attributes):
+        if duplicate:
+            return
         self.images = torch.stack([frame.image for frame in frames])
         self.frame_ids = torch.as_tensor([frame.frame_id for frame in frames])
         self.batch_id = batch_id
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        self.__dict__.update(custom_attributes)
+
+    def duplicate(self, **custom_attributes):
+        new_batch = type(self)(None, None, duplicate=True)
+        new_batch.__dict__.update(self.__dict__)
+        new_batch.__dict__.update(custom_attributes)
+        return new_batch
 
     def __len__(self):
         return self.frame_ids.shape[0]
