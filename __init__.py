@@ -1,5 +1,7 @@
 __author__ = 'Lijun Yu'
 
+from .base import Frame, FrameBatch
+
 
 def get_loader(name):
     if name == 'AVI-R':
