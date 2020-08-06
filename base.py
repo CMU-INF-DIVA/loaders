@@ -27,6 +27,7 @@ class FrameBatch(object):
                  duplicate=False, **custom_attributes):
         if duplicate:
             return
+        self.frame_class = Frame
         self.images = torch.stack([frame.image for frame in frames])
         self.frame_ids = torch.as_tensor([frame.frame_id for frame in frames])
         self.batch_id = batch_id
