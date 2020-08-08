@@ -23,21 +23,13 @@ class Frame(object):
 
 class FrameBatch(object):
 
-    def __init__(self, frames: List[Frame], batch_id: int, *,
-                 duplicate=False, **custom_attributes):
-        if duplicate:
-            return
-        self.frame_class = Frame
-        self.images = torch.stack([frame.image for frame in frames])
+    def __init__(self, frames: List[Frame], batch_id: int, 
+                 **custom_attributes):
+        self.frame_class = type(frames[0])
+        self.images = [frame.image for frame in frames]
         self.frame_ids = torch.as_tensor([frame.frame_id for frame in frames])
         self.batch_id = batch_id
         self.__dict__.update(custom_attributes)
-
-    def duplicate(self, **custom_attributes):
-        new_batch = type(self)(None, None, duplicate=True)
-        new_batch.__dict__.update(self.__dict__)
-        new_batch.__dict__.update(custom_attributes)
-        return new_batch
 
     def __len__(self):
         return self.frame_ids.shape[0]
