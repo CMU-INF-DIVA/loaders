@@ -22,6 +22,8 @@ loader_class = get_loader('AVI-R')  # Or MoviePy
 loader = loader_class(video_path)
 for frame_batch in loader():
     # do something with the frame batch
+
+loader.close()  # Release resources
 ```
 
 ## Dependency

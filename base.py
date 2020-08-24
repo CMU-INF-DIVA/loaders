@@ -23,7 +23,7 @@ class Frame(object):
 
 class FrameBatch(object):
 
-    def __init__(self, frames: List[Frame], batch_id: int, 
+    def __init__(self, frames: List[Frame], batch_id: int,
                  **custom_attributes):
         self.frame_class = type(frames[0])
         self.images = [frame.image for frame in frames]
@@ -65,6 +65,9 @@ class Loader(object):
         start: frame_id of the first frame
         '''
         raise NotImplementedError
+
+    def close(self):
+        return
 
     def __repr__(self):
         return '%s.%s@%s' % (

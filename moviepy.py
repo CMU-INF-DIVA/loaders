@@ -32,3 +32,6 @@ class MoviePyLoader(Loader):
                 batch_id += 1
         if len(frames) > 0:
             yield FrameBatch(frames, batch_id)
+
+    def close(self):
+        self.video.close()
