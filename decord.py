@@ -1,17 +1,17 @@
 import numpy as np
 
-from moviepy.editor import VideoFileClip
+from decord import VideoReader
 
 from .base import Frame, FrameBatch, Loader
 
 
-class MoviePyLoader(Loader):
+class DecordLoader(Loader):
 
     def __init__(self, video_path, parent_dir=''):
         super().__init__(video_path, parent_dir)
-        self.video = VideoFileClip(self.path, audio=False)
-        self.set_meta(self.video.fps, self.video.size[0], self.video.size[1],
-                      self.video.duration * self.video.fps)
+        self.video = VideoReader(self.path)
+        height, width = self.video[0].shape[:2]
+        self.set_meta(self.video.get_avg_fps(), width, height, len(self.video))
 
     def __call__(self, batch_size=1, limit=None, stride=1, start=0):
         frames = []
@@ -20,17 +20,19 @@ class MoviePyLoader(Loader):
             end = min(start + limit * stride, self.meta.num_frames)
         else:
             end = self.meta.num_frames
-        frame_ids = np.arange(start, end, stride)
-        for frame_id in frame_ids:
-            image = self.video.get_frame(frame_id / self.meta.frame_rate)
+        self.video.seek_accurate(start)
+        for frame_id in range(start, end, stride):
+            image = self.video.next().asnumpy()
             frame = Frame(np.ascontiguousarray(image[:, :, ::-1]), frame_id)
             frames.append(frame)
             if len(frames) == batch_size:
                 yield FrameBatch(frames, batch_id)
                 frames = []
                 batch_id += 1
+            if stride > 1:
+                self.video.skip_frames(stride - 1)
         if len(frames) > 0:
             yield FrameBatch(frames, batch_id)
 
     def close(self):
-        self.video.close()
+        del self.video
