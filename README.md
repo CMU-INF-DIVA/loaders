@@ -8,8 +8,9 @@ A submodule of video loaders.
 
 ## Loaders
 
-* [AVI-R](https://pypi.org/project/avi-r/) for `.avi` files.
+* [AVI-R](https://pypi.org/project/avi-r/) for `.avi` files only (handles missing frames).
 * [MoviePy](https://pypi.org/project/moviepy/) for `.mp4` and other files.
+* [Decord](https://github.com/dmlc/decord).
 
 ## API
 
@@ -17,7 +18,7 @@ A submodule of video loaders.
 from loaders import get_loader
 
 video_path = ...
-loader_class = get_loader('AVI-R')  # Or MoviePy
+loader_class = get_loader('AVI-R')  # Or MoviePy, Decord
 
 loader = loader_class(video_path)
 for frame_batch in loader():
