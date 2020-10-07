@@ -21,8 +21,8 @@ video_path = ...
 loader_class = get_loader('AVI-R')  # Or MoviePy, Decord
 
 loader = loader_class(video_path)
-for frame_batch in loader():
-    # do something with the frame batch
+for frame_batch in loader(): # Optional params: batch_size=1, limit=None, stride=1, start=0
+    # Do something with the frame batch
 
 loader.close()  # Release resources
 ```
