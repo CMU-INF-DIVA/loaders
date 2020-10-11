@@ -1,6 +1,3 @@
-import numpy as np
-import torch
-
 from avi_r import AVIReader
 
 from .base import Frame, FrameBatch, Loader
