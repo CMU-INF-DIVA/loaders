@@ -13,5 +13,8 @@ def get_loader(name):
     elif name == 'MoviePy':
         from .moviepy import MoviePyLoader
         return MoviePyLoader
+    elif name == 'OpenCV':
+        from .opencv import OpenCVLoader
+        return OpenCVLoader
     else:
         raise NotImplementedError('Loader<%s> not found' % (name))
