@@ -55,14 +55,14 @@ class Loader(object):
             float(frame_rate), int(width), int(height),
             int(num_frames) if num_frames is not None else None)
 
-    def __call__(self, batch_size: int = 1, limit: Union[None, int] = None,
-                 stride: int = 1,  start: int = 0) \
+    def __call__(self, start: int = 0, end: Union[None, int] = None,
+                 stride: int = 1, batch_size: int = 1) \
             -> Iterator[FrameBatch]:
         '''
-        batch_size: number of frames in a batch
-        limit: total number of frames to yield
-        stride: gap between adjacent frames, 1 for no skip
         start: frame_id of the first frame
+        end: frame_id of the frame after the last frame
+        stride: gap between adjacent frames, 1 for no skip
+        batch_size: number of frames in a batch
         '''
         raise NotImplementedError
 

@@ -14,13 +14,10 @@ class OpenCVLoader(Loader):
             self.video.get(cv2.CAP_PROP_FRAME_HEIGHT),
             self.video.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    def __call__(self, batch_size=1, limit=None, stride=1, start=0):
+    def __call__(self, start=0, end=None, stride=1, batch_size=1):
+        end = end or self.meta.num_frames
         frames = []
         batch_id = 0
-        if limit is not None:
-            end = min(start + limit * stride, self.meta.num_frames)
-        else:
-            end = self.meta.num_frames
         self.video.set(cv2.CAP_PROP_POS_FRAMES, start)
         for frame_id in range(start, end, stride):
             ret, image = self.video.read()
