@@ -25,14 +25,23 @@ class FrameBatch(object):
 
     def __init__(self, frames: List[Frame], batch_id: int,
                  **custom_attributes):
-        self.frame_class = type(frames[0])
-        self.images = [frame.image for frame in frames]
-        self.frame_ids = torch.as_tensor([frame.frame_id for frame in frames])
+        self.frames = frames
         self.batch_id = batch_id
         self.__dict__.update(custom_attributes)
 
+    def __getitem__(self, idx):
+        return self.frames[idx]
+
+    def __getattr__(self, name):
+        if name.startswith('_'):
+            return super(FrameBatch, self).__getattribute__(name)
+        ret = [getattr(f, name, None) for f in self.frames]
+        if any(ret):
+            return ret
+        return super(FrameBatch, self).__getattribute__(name)
+
     def __len__(self):
-        return self.frame_ids.shape[0]
+        return len(self.frames)
 
     def __repr__(self):
         return '%s(id=%d, len=%d, range=%d-%d)' % (
