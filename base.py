@@ -36,7 +36,7 @@ class FrameBatch(object):
         if name.startswith('_'):
             return super(FrameBatch, self).__getattribute__(name)
         ret = [getattr(f, name, None) for f in self.frames]
-        if any(ret):
+        if any([r is not None for r in ret]):
             return ret
         return super(FrameBatch, self).__getattribute__(name)
 
