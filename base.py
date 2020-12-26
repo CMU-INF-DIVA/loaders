@@ -46,7 +46,7 @@ class FrameBatch(object):
     def __repr__(self):
         return '%s(id=%d, len=%d, range=%d-%d)' % (
             self.__class__.__name__, self.batch_id, len(self),
-            self.frame_ids[0], self.frame_ids[-1])
+            self.frames[0].frame_id, self.frames[-1].frame_id)
 
 
 LoaderMeta = namedtuple('LoaderMeta', [
