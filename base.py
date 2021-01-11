@@ -23,6 +23,8 @@ class Frame(object):
 
 class FrameBatch(object):
 
+    BUILTIN_ATTRS = ['frames', 'batch_id']
+
     def __init__(self, frames: List[Frame], batch_id: int,
                  **custom_attributes):
         self.frames = frames
@@ -33,7 +35,7 @@ class FrameBatch(object):
         return self.frames[idx]
 
     def __getattr__(self, name):
-        if name.startswith('_'):
+        if name in self.BUILTIN_ATTRS:
             return super(FrameBatch, self).__getattribute__(name)
         ret = [getattr(f, name, None) for f in self.frames]
         if any([r is not None for r in ret]):
