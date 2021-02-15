@@ -8,6 +8,7 @@ class OpenCVLoader(Loader):
     def __init__(self, video_path, parent_dir=''):
         super().__init__(video_path, parent_dir)
         self.video = cv2.VideoCapture(self.path)
+        assert self.video.isOpened(), 'Video not found: %s' % (self.path)
         self.set_meta(
             self.video.get(cv2.CAP_PROP_FPS),
             self.video.get(cv2.CAP_PROP_FRAME_WIDTH),
