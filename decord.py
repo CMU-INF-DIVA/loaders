@@ -7,9 +7,9 @@ from .base import Frame, FrameBatch, Loader
 
 class DecordLoader(Loader):
 
-    def __init__(self, video_path, parent_dir=''):
+    def __init__(self, video_path, parent_dir='', **reader_args):
         super().__init__(video_path, parent_dir)
-        self.video = VideoReader(self.path)
+        self.video = VideoReader(self.path, **reader_args)
         height, width = self.video[0].shape[:2]
         self.set_meta(self.video.get_avg_fps(), width, height, len(self.video))
 

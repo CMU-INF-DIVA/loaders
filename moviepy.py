@@ -7,9 +7,9 @@ from .base import Frame, FrameBatch, Loader
 
 class MoviePyLoader(Loader):
 
-    def __init__(self, video_path, parent_dir=''):
+    def __init__(self, video_path, parent_dir='', **reader_args):
         super().__init__(video_path, parent_dir)
-        self.video = VideoFileClip(self.path, audio=False)
+        self.video = VideoFileClip(self.path, audio=False, **reader_args)
         self.set_meta(self.video.fps, self.video.size[0], self.video.size[1],
                       self.video.duration * self.video.fps)
 

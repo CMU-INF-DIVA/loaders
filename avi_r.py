@@ -5,9 +5,9 @@ from .base import Frame, FrameBatch, Loader
 
 class AVIRLoader(Loader):
 
-    def __init__(self, video_path, parent_dir=''):
+    def __init__(self, video_path, parent_dir='', **reader_args):
         super().__init__(video_path, parent_dir)
-        self.video = AVIReader(video_path, parent_dir)
+        self.video = AVIReader(video_path, parent_dir, **reader_args)
         self.set_meta(self.video.frame_rate, self.video.width,
                       self.video.height, self.video.num_frames)
 
