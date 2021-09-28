@@ -15,6 +15,7 @@ class MoviePyLoader(Loader):
 
     def __call__(self, start=0, end=None, stride=1, batch_size=1):
         end = end or self.meta.num_frames
+        end = min(end, self.meta.num_frames)
         frames = []
         batch_id = 0
         for frame_id in range(start, end, stride):
